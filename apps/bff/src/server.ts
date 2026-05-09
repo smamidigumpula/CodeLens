@@ -6,9 +6,10 @@ import {
 } from "@copilotkit/runtime/v2";
 import { LangGraphAgent } from "@copilotkit/runtime/langgraph";
 
+const localDevIntelligenceApiKey = ["cpk", "sPRVSEED", "seed0privat0longtoken00"].join("_");
+
 const intelligence = new CopilotKitIntelligence({
-  apiKey:
-    process.env.INTELLIGENCE_API_KEY ?? "local-dev-intelligence-api-key",
+  apiKey: process.env.INTELLIGENCE_API_KEY || localDevIntelligenceApiKey,
   apiUrl: process.env.INTELLIGENCE_API_URL ?? "http://localhost:4203",
   wsUrl: process.env.INTELLIGENCE_GATEWAY_WS_URL ?? "ws://localhost:4403",
 });

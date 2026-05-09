@@ -94,7 +94,7 @@ const quickstart = [
   },
   {
     title: "Add your Gemini key",
-    body: "GEMINI_API_KEY=AIza...",
+    body: "GEMINI_API_KEY=<your-gemini-api-key>",
     note: "Get a key at aistudio.google.com → Get API key. Drop it in BOTH .env and apps/agent/.env (the agent reads its own dotenv).",
   },
   {

@@ -28,7 +28,7 @@ npx copilotkit@latest license
 Follow the prompt; the CLI prints a token. Paste it into `.env` at the repo root:
 
 ```bash
-COPILOTKIT_LICENSE_TOKEN=ck_...
+COPILOTKIT_LICENSE_TOKEN=<optional-copilotkit-license-token>
 ```
 
 **Path B — dashboard.** If you can't run `npx` (corp network, sandboxed shell, etc.), sign in at [dashboard.operations.copilotkit.ai/sign-in](https://dashboard.operations.copilotkit.ai/sign-in), issue a token from the UI, and paste it into `.env` as above.
@@ -44,7 +44,7 @@ This kit defaults to **Gemini 3.1 Flash-Lite**. You need a Gemini API key for ch
 1. Go to [aistudio.google.com](https://aistudio.google.com) and sign in with a Google Account.
 2. In the left sidebar, click **Get API key**.
 3. Click **Create API key** — choose **Create API key in new project** or **in existing project**.
-4. Copy the key (starts with `AIza`). You can retrieve it later from the same dashboard.
+4. Copy the key. You can retrieve it later from the same dashboard.
 
 Full docs: https://ai.google.dev/gemini-api/docs/api-key
 
@@ -52,10 +52,10 @@ Then drop it into both env files:
 
 ```bash
 # .env (root, used by the BFF + Next.js)
-GEMINI_API_KEY=AIza...
+GEMINI_API_KEY=<your-gemini-api-key>
 
 # apps/agent/.env (used by langgraph dev)
-GEMINI_API_KEY=AIza...
+GEMINI_API_KEY=<your-gemini-api-key>
 ```
 
 Prefer a different model (OpenAI, Anthropic, Ollama)? See [model-switching.md](model-switching.md).
