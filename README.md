@@ -45,6 +45,8 @@ npm run install:agent
 
 Add a real `GEMINI_API_KEY` in both `.env` and `apps/agent/.env` for live agent turns. Without it, the starter kit boots its noop fallback so the UI can still load.
 
+To see LangChain/LangGraph traces in LangSmith, add `LANGSMITH_API_KEY` to both `.env` and `apps/agent/.env`. The templates already include `LANGSMITH_TRACING=true` and `LANGSMITH_PROJECT=codelens-local`.
+
 Run the full stack:
 
 ```bash

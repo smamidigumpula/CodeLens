@@ -20,6 +20,10 @@ from src.runtime import build_graph
 # Load .env early so model keys are visible.
 load_dotenv()
 
+if os.getenv("LANGSMITH_API_KEY"):
+    os.environ.setdefault("LANGSMITH_TRACING", "true")
+    os.environ.setdefault("LANGSMITH_PROJECT", "codelens-local")
+
 
 # `langgraph dev` uses an in-memory checkpoint store, so every agent boot
 # starts with zero threads in LangGraph but the Intelligence Postgres
