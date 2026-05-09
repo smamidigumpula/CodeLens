@@ -2,21 +2,30 @@
   "name": "codelens",
   "version": "0.1.0",
   "private": true,
-  "type": "module",
-  "description": "Agentic UI codebase analyzer that turns GitHub repositories into interactive dependency graphs.",
+  "workspaces": [
+    "apps/*"
+  ],
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
+    "dev:infra": "docker compose --project-directory . -f deployment/docker-compose.yml up -d --wait && npm run seed",
+    "dev:infra:down": "docker compose --project-directory . -f deployment/docker-compose.yml down",
+    "seed": "bash scripts/seed-default-user.sh",
+    "check-env": "bash scripts/check-env.sh",
+    "predev": "bash scripts/check-env.sh",
+    "dev": "npm run dev:infra && concurrently -k -n ui,bff,agent -c blue,cyan,green \"npm run dev:ui\" \"npm run dev:bff\" \"npm run dev:agent\"",
+    "predev:full": "bash scripts/check-env.sh",
+    "dev:full": "npm run dev:infra && concurrently -k -n ui,bff,agent,mcp -c blue,cyan,green,magenta \"npm run dev:ui\" \"npm run dev:bff\" \"npm run dev:agent\" \"npm run dev:mcp\"",
+    "dev:ui": "npm run dev --workspace frontend",
+    "dev:bff": "npm run dev --workspace bff",
+    "dev:agent": "cd apps/agent && uv run langgraph dev --port 8133",
+    "dev:mcp": "npm run dev --workspace mcp",
+    "install:agent": "cd apps/agent && (command -v uv >/dev/null 2>&1 && uv sync || echo \"uv not found; skipping Python agent sync. Install uv and run npm run install:agent before using the live agent.\")",
+    "install:mcp": "npm install --workspace mcp",
+    "postinstall": "npm run install:agent",
+    "build": "npm run build --workspace frontend",
+    "start": "npm run start --workspace frontend",
+    "lint": "npm run lint --workspace frontend"
   },
-  "dependencies": {
-    "@vitejs/plugin-react": "^4.3.4",
-    "vite": "^6.1.0",
-    "typescript": "^5.7.3",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "@types/react": "^18.3.20",
-    "@types/react-dom": "^18.3.5"
-  },
-  "devDependencies": {}
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
 }

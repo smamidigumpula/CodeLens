@@ -1,0 +1,133 @@
+import type { GraphData } from "./types";
+
+export const sampleGraph: GraphData = {
+  repo: "smamidigumpula/CodeLens",
+  branch: "demo",
+  files: [
+    {
+      path: "apps/frontend/src/app/codelens/page.tsx",
+      name: "page.tsx",
+      language: "TypeScript",
+      size: 15000,
+      content:
+        "use client\n\nimport { useFrontendTool } from '@copilotkit/react-core/v2';\nimport { DependencyGraph } from '@/components/codelens/DependencyGraph';\n",
+      imports: ["@copilotkit/react-core/v2", "@/components/codelens/DependencyGraph"],
+      resolvedImports: ["apps/frontend/src/components/codelens/DependencyGraph.tsx"],
+    },
+    {
+      path: "apps/frontend/src/components/codelens/DependencyGraph.tsx",
+      name: "DependencyGraph.tsx",
+      language: "TypeScript",
+      size: 9800,
+      content: "import type { GraphData } from '@/lib/codelens/types';\n",
+      imports: ["@/lib/codelens/types"],
+      resolvedImports: ["apps/frontend/src/lib/codelens/types.ts"],
+    },
+    {
+      path: "apps/agent/src/codelens_tools.py",
+      name: "codelens_tools.py",
+      language: "Python",
+      size: 11200,
+      content:
+        "from langchain_core.tools import tool\n\n@tool\ndef analyze_github_repository(github_url: str) -> dict:\n    return {}\n",
+      imports: ["langchain_core.tools"],
+      resolvedImports: [],
+    },
+    {
+      path: "apps/agent/main.py",
+      name: "main.py",
+      language: "Python",
+      size: 4200,
+      content: "from src.codelens_tools import codelens_tools\n",
+      imports: ["src.codelens_tools"],
+      resolvedImports: ["apps/agent/src/codelens_tools.py"],
+    },
+    {
+      path: "apps/frontend/src/lib/codelens/types.ts",
+      name: "types.ts",
+      language: "TypeScript",
+      size: 1400,
+      content: "export interface GraphData {}\n",
+      imports: [],
+      resolvedImports: [],
+    },
+  ],
+  nodes: [
+    {
+      id: "apps/frontend/src/app/codelens/page.tsx",
+      label: "page.tsx",
+      group: "apps",
+      language: "TypeScript",
+      imports: 1,
+      importedBy: 0,
+      size: 15000,
+    },
+    {
+      id: "apps/frontend/src/components/codelens/DependencyGraph.tsx",
+      label: "DependencyGraph.tsx",
+      group: "apps",
+      language: "TypeScript",
+      imports: 1,
+      importedBy: 1,
+      size: 9800,
+    },
+    {
+      id: "apps/agent/src/codelens_tools.py",
+      label: "codelens_tools.py",
+      group: "apps",
+      language: "Python",
+      imports: 0,
+      importedBy: 1,
+      size: 11200,
+    },
+    {
+      id: "apps/agent/main.py",
+      label: "main.py",
+      group: "apps",
+      language: "Python",
+      imports: 1,
+      importedBy: 0,
+      size: 4200,
+    },
+    {
+      id: "apps/frontend/src/lib/codelens/types.ts",
+      label: "types.ts",
+      group: "apps",
+      language: "TypeScript",
+      imports: 0,
+      importedBy: 1,
+      size: 1400,
+    },
+  ],
+  edges: [
+    {
+      source: "apps/frontend/src/app/codelens/page.tsx",
+      target: "apps/frontend/src/components/codelens/DependencyGraph.tsx",
+      kind: "import",
+    },
+    {
+      source: "apps/frontend/src/components/codelens/DependencyGraph.tsx",
+      target: "apps/frontend/src/lib/codelens/types.ts",
+      kind: "import",
+    },
+    {
+      source: "apps/agent/main.py",
+      target: "apps/agent/src/codelens_tools.py",
+      kind: "import",
+    },
+  ],
+  summary: {
+    fileCount: 5,
+    edgeCount: 3,
+    languages: { TypeScript: 3, Python: 2 },
+    hotspots: [
+      "apps/frontend/src/components/codelens/DependencyGraph.tsx",
+      "apps/agent/src/codelens_tools.py",
+    ],
+    entrypoints: [
+      "apps/frontend/src/app/codelens/page.tsx",
+      "apps/agent/main.py",
+    ],
+    isolated: [],
+  },
+};

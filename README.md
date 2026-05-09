@@ -1,55 +1,74 @@
 # CodeLens
 
-CodeLens turns a GitHub repository URL into an agent-generated, interactive dependency graph for exploring code structure, module relationships, and architectural flow.
+CodeLens is a Generative UI Global Hackathon project built from the required starter kit. It accepts a GitHub repository URL, analyzes source imports with a LangChain agent, and turns the result into an interactive dependency graph for exploring code structure, module relationships, and architectural flow.
 
-It was built for the Generative UI Global Hackathon: Agentic Interfaces. The app uses an AG-UI-style event timeline and A2UI-inspired declarative surfaces so the agent does more than answer in text: it renders the exact controls, graph, inspector, and next-step panels needed for codebase exploration.
+Reference inspiration: [CodeAtlas](https://github.com/lucyb0207/CodeAtlas).
+
+## Hackathon Stack
+
+- Starter kit: [Generative UI Global Hackathon Starter Kit](https://github.com/jerelvelarde/Generative-UI-Global-Hackathon-Starter-Kit)
+- Agent: Python LangChain / LangGraph via `create_deep_agent` or `create_agent`
+- UI transport: CopilotKit AG-UI runtime
+- Generative UI protocol: A2UI-style frontend tools and generated surfaces
+- Optional surface: MCP Apps server from the starter kit
+- Frontend: Next.js, React, TypeScript
 
 ## What It Does
 
-- Accepts a public GitHub repository URL.
-- Reads the repository tree through the GitHub API.
-- Fetches source files for JavaScript, TypeScript, Python, Go, Rust, and Java.
-- Extracts import/include relationships with language-aware parsing rules.
-- Resolves local imports into a file-level dependency graph.
-- Generates interactive UI surfaces for metrics, graph exploration, module inspection, and architecture follow-ups.
+- Accepts a public GitHub repo URL through the agent chat.
+- Calls `analyze_github_repository` from the Python agent.
+- Fetches the repo tree through the GitHub API.
+- Parses JavaScript, TypeScript, Python, Go, Rust, and Java import relationships.
+- Resolves local module imports into a file-level dependency graph.
+- Uses CopilotKit frontend tools to update the canvas:
+  - `setRepositoryGraph`
+  - `selectModule`
+  - `highlightModules`
+  - `setCanvasStatus`
+  - `renderDependencyGraph`
+- Renders an interactive graph with search, language filtering, focus depth, highlighted hotspots, and a module inspector.
 
-## Hackathon Protocol
-
-CodeLens uses the **AG-UI + A2UI-inspired surfaces** path:
-
-- `run.started`, `tool.called`, `surface.created`, and `run.completed` events model the agent-to-frontend transport.
-- The agent produces declarative surface descriptors for metrics, graph, inspector, and action panels.
-- The React client renders those surfaces as native interactive UI instead of executing arbitrary generated code.
-
-This keeps the project aligned with the hackathon goal: agentic interfaces where the useful output is a live UI, not a chatbot transcript.
-
-## Reference
-
-CodeLens is inspired by [CodeAtlas](https://github.com/lucyb0207/CodeAtlas), especially its GitHub URL intake, repository dependency graph, file inspector, search, and focus-based architecture exploration.
-
-## Tech Stack
-
-- React + TypeScript
-- Vite
-- GitHub REST API
-- Custom SVG graph renderer
-- AG-UI-style event packet + A2UI-inspired declarative surfaces
-
-## Getting Started
+## Local Setup
 
 ```bash
 npm install
+cp .env.example .env
+cp apps/agent/.env.example apps/agent/.env
+```
+
+Install `uv` for the Python agent, then sync agent dependencies:
+
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+npm run install:agent
+```
+
+Add a real `GEMINI_API_KEY` in both `.env` and `apps/agent/.env` for live agent turns. Without it, the starter kit boots its noop fallback so the UI can still load.
+
+Run the full stack:
+
+```bash
 npm run dev
 ```
 
-Then open the local Vite URL and paste a public GitHub repository URL.
+Open the frontend and go to `/codelens`.
+
+## Demo Prompt
+
+```text
+Analyze https://github.com/lucyb0207/CodeAtlas and show the dependency graph.
+```
+
+Expected flow:
+
+1. The agent calls `setCanvasStatus`.
+2. The agent calls `analyze_github_repository`.
+3. The agent calls `setRepositoryGraph` with the returned graph.
+4. The agent highlights hotspots and selects the most connected module.
+5. The chat renders a compact generated dependency summary card.
 
 ## Notes
 
-- Public repositories work without a token, subject to GitHub API rate limits.
-- The analyzer limits source file size and total files so the prototype stays responsive during a hackathon demo.
-- Local relative imports are resolved; third-party package imports are treated as external and omitted from the file graph.
-
-## Demo Pitch
-
-CodeLens is an agentic code exploration UI: the agent reads a repository and dynamically generates the graph, controls, inspector, and architectural next steps needed to understand it.
+- Public GitHub repositories work without a token, subject to GitHub API rate limits.
+- The analyzer caps file size and file count to keep hackathon demos responsive.
+- Third-party package imports are omitted from the file graph; local relative imports are resolved.
