@@ -31,6 +31,10 @@ fi
 
 # ---------- 3. agent/.env ----------------------------------------------------
 AGENT_ENV="$REPO_ROOT/apps/agent/.env"
+ROOT_ENV="$REPO_ROOT/.env"
+if [[ ! -f "$ROOT_ENV" ]]; then
+  PROBLEMS+=(".env is missing. Run: cp .env.example .env, then keep the default port remaps or edit them before npm run dev.")
+fi
 if [[ ! -f "$AGENT_ENV" ]]; then
   PROBLEMS+=("apps/agent/.env is missing. Run: cp apps/agent/.env.example apps/agent/.env, then fill in the keys.")
 fi
