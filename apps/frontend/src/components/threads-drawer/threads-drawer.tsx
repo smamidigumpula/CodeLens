@@ -28,6 +28,7 @@ export interface ThreadsDrawerProps {
   agentId: string;
   threadId: string | undefined;
   onThreadChange: (threadId: string | undefined) => void;
+  defaultOpen?: boolean;
 }
 
 interface DrawerThread {
@@ -120,9 +121,10 @@ export default function ThreadsDrawer({
   agentId,
   threadId,
   onThreadChange,
+  defaultOpen = true,
 }: ThreadsDrawerProps) {
   const [showArchived, setShowArchived] = useState(false);
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(defaultOpen);
   const [pendingDelete, setPendingDelete] = useState<{
     id: string;
     title: string;

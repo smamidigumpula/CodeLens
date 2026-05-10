@@ -42,18 +42,18 @@ export function DependencyGraph({
   const byId = useMemo(() => new Map(positioned.map((node) => [node.id, node])), [positioned]);
 
   return (
-    <section className="rounded-lg border border-border bg-card p-4">
-      <div className="mb-3 grid gap-2 lg:grid-cols-[1fr_180px_180px_auto_auto]">
+    <section className="flex min-h-0 flex-1 flex-col rounded-lg border border-border bg-card p-3 shadow-sm">
+      <div className="mb-3 grid shrink-0 gap-2 xl:grid-cols-[minmax(190px,1fr)_160px_170px_auto_auto]">
         <input
           value={query}
           onChange={(event) => setQuery(event.target.value)}
           placeholder="Search files"
-          className="h-10 rounded-md border border-border bg-background px-3 text-sm"
+          className="h-10 rounded-md border border-border bg-background px-3 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
         />
         <select
           value={language}
           onChange={(event) => setLanguage(event.target.value)}
-          className="h-10 rounded-md border border-border bg-background px-3 text-sm"
+          className="h-10 rounded-md border border-border bg-background px-3 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
         >
           {languages.map((item) => (
             <option key={item}>{item}</option>
@@ -74,14 +74,14 @@ export function DependencyGraph({
           type="button"
           onClick={() => setFocusId(selectedId)}
           disabled={!selectedId}
-          className="h-10 rounded-md bg-foreground px-4 text-sm font-semibold text-background disabled:opacity-40"
+          className="h-10 rounded-md bg-slate-950 px-4 text-sm font-semibold text-white disabled:opacity-40"
         >
           Focus
         </button>
         <button
           type="button"
           onClick={() => setFocusId(null)}
-          className="h-10 rounded-md border border-border px-4 text-sm font-semibold"
+          className="h-10 rounded-md border border-border bg-background px-4 text-sm font-semibold"
         >
           Reset
         </button>
@@ -91,7 +91,7 @@ export function DependencyGraph({
         viewBox="0 0 1100 680"
         role="img"
         aria-label={`${visible.nodes.length} files and ${visible.edges.length} dependencies`}
-        className="h-[520px] w-full rounded-lg border border-border bg-[#f8fafc]"
+        className="min-h-[360px] flex-1 rounded-lg border border-border bg-[#f8fafc]"
       >
         <defs>
           <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
@@ -144,6 +144,16 @@ export function DependencyGraph({
           );
         })}
       </svg>
+      <div className="mt-2 flex shrink-0 flex-wrap gap-2">
+        {languages
+          .filter((item) => item !== "All")
+          .map((item) => (
+            <span key={item} className="inline-flex items-center gap-1.5 text-xs text-muted-foreground">
+              <i className="size-2 rounded-full" style={{ background: colors[item as Language] }} />
+              {item}
+            </span>
+          ))}
+      </div>
     </section>
   );
 }
