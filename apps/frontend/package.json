@@ -3,9 +3,9 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack -p 3010",
+    "dev": "next dev --turbopack -H 0.0.0.0 -p ${FRONTEND_PORT:-3010}",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -H 0.0.0.0 -p ${FRONTEND_PORT:-3010}",
     "lint": "next lint"
   },
   "dependencies": {

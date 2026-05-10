@@ -12,6 +12,7 @@
     "check-env": "bash scripts/check-env.sh",
     "predev": "bash scripts/check-env.sh",
     "dev": "npm run dev:infra && concurrently -k -n ui,bff,agent -c blue,cyan,green \"npm run dev:ui\" \"npm run dev:bff\" \"npm run dev:agent\"",
+    "dev:daytona": "FRONTEND_PORT=3000 CODELENS_FRONTEND_URL=http://localhost:3000/codelens npm run dev",
     "predev:full": "bash scripts/check-env.sh",
     "dev:full": "npm run dev:infra && concurrently -k -n ui,bff,agent,mcp -c blue,cyan,green,magenta \"npm run dev:ui\" \"npm run dev:bff\" \"npm run dev:agent\" \"npm run dev:mcp\"",
     "dev:ui": "npm run dev --workspace frontend",

@@ -55,6 +55,10 @@ npm run dev
 
 Open the frontend and go to `/codelens`.
 
+## Daytona Deployment
+
+For the hackathon deployment, run CodeLens in a Daytona sandbox from this GitHub repository and expose the UI through the port `3000` preview URL. See [docs/daytona-deployment.md](docs/daytona-deployment.md) for the sandbox setup, required environment variables, and preview URL notes.
+
 ## Demo Prompt
 
 ```text
