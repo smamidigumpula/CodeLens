@@ -1,4 +1,5 @@
 import { serve } from "@hono/node-server";
+import { Hono } from "hono";
 import {
   CopilotRuntime,
   CopilotKitIntelligence,
@@ -26,7 +27,7 @@ const agent = new LangGraphAgent({
   },
 });
 
-const app = createCopilotEndpoint({
+const copilotApp = createCopilotEndpoint({
   basePath: "/api/copilotkit",
   runtime: new CopilotRuntime({
     intelligence,
@@ -45,6 +46,14 @@ const app = createCopilotEndpoint({
       ],
     },
   }),
+});
+
+const app = new Hono();
+
+app.all("/", (c) => {
+  const frontendUrl =
+    process.env.CODELENS_FRONTEND_URL ?? "http://localhost:3010/codelens";
+  return c.redirect(frontendUrl, 302);
 });
 
 // Rewrite known 5xx error bodies into structured `{ error, hint, command }`
@@ -102,6 +111,8 @@ app.use("*", async (c, next) => {
     return;
   }
 });
+
+app.route("/", copilotApp);
 
 const port = Number(process.env.PORT) || 4000;
 
